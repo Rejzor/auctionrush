@@ -18,7 +18,7 @@ def index(request):
     latest_auction_list = auction_list.filter(is_active=True).order_by('date_added')
     template = loader.get_template('auctions/index.html')
     context = {
-        'title': "Active auctions",
+        'title': "Aktywne aukcje",
         'auction_list': latest_auction_list,
     }
     return HttpResponse(template.render(context, request))
@@ -30,7 +30,7 @@ def auctions(request):
         a.resolve()
     template = loader.get_template('auctions/index.html')
     context = {
-        'title': "All auctions",
+        'title': "Wszystkie aukcje",
         'auction_list': auction_list,
     }
     return HttpResponse(template.render(context, request))
@@ -49,9 +49,10 @@ def detail(request, auction_id):
         if user_bid:
             already_bid = True
             bid_amount = user_bid.amount
+            print(bid_amount)
             return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid, 'bid_amount': bid_amount})
 
-    return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid})
+    return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid}, )
     # try:
     #     auction = Auction.objects.get(pk=auction_id)
     # except Auction.DoesNotExist:
@@ -72,7 +73,7 @@ def bid(request, auction_id):
     if not auction.is_active:
         return render(request, 'auctions/detail.html', {
             'auction': auction,
-            'error_message': "The auction has expired.",
+            'error_message': "Aukcja została zakończona",
         })
 
     try:
@@ -80,18 +81,24 @@ def bid(request, auction_id):
         # Prevent user from entering an empty or invalid bid
         if not bid_amount or int(bid_amount) < auction.min_value:
             raise(KeyError)
-        if not bid:
+        if not bid or bid.bidder is not request.user:
             # Create new Bid object if it does not exist
             bid = Bid()
             bid.auction = auction
             bid.bidder = request.user
-        bid.amount = bid_amount
+        bid.amount = bid.check_amount(bid_amount, auction.bid_value, auction.min_value)
         bid.date = datetime.now(timezone.utc)
+        auction.min_value = bid.amount
+        auction.winner = bid.bidder
+        auction.final_value = bid_amount
+        auction.save()
+        bid.save()
+
     except (KeyError):
         # Redisplay the auction details.
         return render(request, 'auctions/detail.html', {
             'auction': auction,
-            'error_message': "Invalid bid amount.",
+            'error_message': "Wartość,którą podałeś/aś jest nieprawidłowa",
         })
     else:
         bid.save()
@@ -101,14 +108,14 @@ def bid(request, auction_id):
         # return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
         return HttpResponseRedirect(reverse('my_bids', args=()))
 
-        # TODO redirect to my bids
-        # template = loader.get_template('auctions/my_bids.html')
-        # context = {
-        #     'my_bids_list': my_bids_list,
-        # }
-        # return HttpResponse(template.render(context, request))
-
-        # return HttpResponse(f"You just bid {bid_amount} on auction {auction_id}.")
+    # #     # TODO redirect to my bids
+    #     template = loader.get_template('auctions/my_bids.html')
+    #     context = {
+    #         'my_bids_list': my_bids_list,
+    #     }
+    #     return HttpResponse(template.render(context, request))
+    # #
+    # return HttpResponse(f"You just bid {bid_amount} on auction {auction_id}.")
 
 # Create auction
 @login_required
@@ -118,7 +125,8 @@ def create(request):
         try:
             title = request.POST['title']
             min_value = request.POST['min_value']
-            if not title or not min_value:
+            bid_value = request.POST['bid_value']
+            if not title or not min_value or not bid_value:
                 raise(KeyError)
         except (KeyError):
             # Redisplay the create auction page with an error message.
@@ -137,6 +145,7 @@ def create(request):
                 image = form.cleaned_data['image']
                 auction.image = image
             # auction.date_added = datetime.utcnow()
+            auction.bid_value = bid_value
             auction.date_added = datetime.now(timezone.utc)
             auction.save()
             # return HttpResponseRedirect(reverse('auctions:detail', args=(auction.id,)))

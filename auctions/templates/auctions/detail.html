@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% block title %}<title>{{ auction.title }} - Auction Rush</title>{% endblock %}
+{% block title %}<title>{{ auction.title }} - ptasznikowe aukcje</title>{% endblock %}
 
 <h1> {{ auction.title }} </h1>
 <div class="wrapper">
@@ -13,15 +13,14 @@
         {% csrf_token %}
         <div class=\"input_label\">
         {% if error_message %}<p class="error" ><strong>{{ error_message }}</strong></p>{% endif %}
-        {% if already_bid %}
-            <h3> Current bid: {{ bid_amount }} </h3>
-        {% endif %}
-        <span>Enter amount ($):</span>
+        <span>Przebijamy o {{ auction.bid_value }}zł</span>
+        <br>
+        <span>Wprowadź wartość:</span>
         <span class="required_field" >*</span>
         </div>
         <input class="textbox" type="text" class="input_box" name="amount">
         <br>
-        <a><input class="submit_button" type="submit" class="submit_button" value="Bid"></a>
+        <a><input class="submit_button" type="submit" class="submit_button" value="Licytuj"></a>
         </form>
         <br>
         <!-- </div> -->
@@ -33,21 +32,21 @@
         <span><img class="auction_image_index" src="{{ auction.image.url }}"></span>
             {% if auction.is_active %}
                 {% if auction.remaining_minutes < 2 %}
-                    <div class="auction-card-urgent">Less than {{ auction.remaining_minutes }}m</div>
+                    <div class="auction-card-urgent">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
                 {% else %}
-                    <div class="auction-card-active">Less than {{ auction.remaining_minutes }}m</div>
+                    <div class="auction-card-active">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
                 {% endif %}
             {% else %}
             <div class="auction-card-inactive">Expired</div>
             {% endif %}
-            <div class="auction-card-value">{{ auction.min_value }}$</div>
+            <div class="auction-card-value">{{ auction.min_value }}zł</div>
         </div>
     </span>
 </div>
 {% if auction.desc %}
 <div class="wrapper">
     <div class="desc_box">
-    <div class="desc_box_title">Description</div>
+    <div class="desc_box_title">Opis</div>
     <hr>
     {{ auction.desc }}
     </div>

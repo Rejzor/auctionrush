@@ -1,29 +1,31 @@
 {% extends "base.html" %}
-{% block title %}<title>My Auctions - Auction Rush</title>{% endblock %}
+{% block title %}<title>Moje aukcje - ptasznikowe aukcje</title>{% endblock %}
 {% block content %}
 
-<h2> My auctions </h2>
+<h2> Moje aukcje </h2>
 {% if my_auctions_list %}
     <ul class="my-auction-list">
     {% for auction in my_auctions_list %}
         <li class="my-auction-li"><a class="my-auction-link" href="{% url 'auctions:detail' auction.id %}">{{ auction.title }}</a>
             <hr>
-            <div class="my-auction-date">Added: {{ auction.date_added }}</div>
+            <div class="my-auction-date">Dodano: {{ auction.date_added }}</div>
             {% if auction.is_active %}
                 <span class="my-auction-status-active">
-                    Pending
+                    Aukcja w toku
                 </span>
                 <span class="my-auction-value">
-                    {{ auction.min_value }}$
+                    {{ auction.min_value }}zł
                 </span>
             {% else %}
                 {% if auction.final_value %}
                 <span class="my-auction-status-resolved">
-                    Final value: {{ auction.final_value }}$
+                    Wartość końcowa: {{ auction.final_value }}zł
+                    <br></br>
+                    Wygrany: {{ auction.winner }}
                 </span>
                 {% else %}
                 <span class="my-auction-status-no_winner">
-                    No winner
+                    Brak zwycięzcy
                 </span>
                 {% endif %}
             {% endif %}
@@ -31,7 +33,7 @@
     {% endfor %}
     </ul>
 {% else %}
-    <h4>No auctions are available.</h4>
+    <h4>Brak aukcji.</h4>
 {% endif %}
 
 {% endblock %}

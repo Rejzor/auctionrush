@@ -20,16 +20,12 @@ class Auction(models.Model):
                                related_name="auction_winner",
                                related_query_name="auction_winner")
     final_value = models.IntegerField(blank=True, null=True)
+    bid_value = models.IntegerField(blank=True, null=True)
 
     def resolve(self):
         if self.is_active:
             # If expired
             if self.has_expired():
-                # Define winner
-                highest_bid = Bid.objects.filter(auction=self).order_by('-amount').order_by('date').first()
-                if highest_bid:
-                    self.winner = highest_bid.bidder
-                    self.final_value = highest_bid.amount
                 self.is_active = False
                 self.save()
 
@@ -53,10 +49,19 @@ class Auction(models.Model):
         else:
             return(0)
 
+
 class Bid(models.Model):
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
     amount = models.IntegerField()
     # is_cancelled = models.BooleanField(default=False)
     date = models.DateTimeField('when the bid was made')
+
+    def check_amount(self, bid_amount, bid_value, min_value):
+        substract = int(bid_amount) - int(min_value)
+        modulo = int(substract) % int(bid_value)
+        if not modulo:
+            return int(bid_amount)
+        else:
+            raise(KeyError)
 

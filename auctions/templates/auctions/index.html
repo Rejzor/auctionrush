@@ -10,20 +10,25 @@
             <div class="auction-card-title">{{ auction.title }}</div>
             {% if auction.is_active %}
                 {% if auction.remaining_minutes < 2 %}
-                    <div class="auction-card-urgent">Less than {{ auction.remaining_minutes }}m</div>
+                    <div class="auction-card-urgent">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
                 {% else %}
-                    <div class="auction-card-active">Less than {{ auction.remaining_minutes }}m</div>
+                    <div class="auction-card-active">Pozosotało mniej niż {{ auction.remaining_minutes }}m</div>
                 {% endif %}
             {% else %}
-            <div class="auction-card-inactive">Expired</div>
+            <div class="auction-card-inactive">Zakończona</div>
+                {% if auction.final_value  %}
+                    <div class="auction-card-value">{{ auction.winner }} {{ auction.final_value }}zł</div>
+                {% else %}
+                    <div class="auction-card-value">Brak zwycięzcy</div>
+                {% endif %}
             {% endif %}
-            <div class="auction-card-value">{{ auction.min_value }}$</div>
+{#            <div class="auction-card-value">{{ auction.min_value }}zł</div>#}
         </a>
         <!-- <li class="auction-card"><a href="{% url 'auctions:detail' auction.id %}">{{ auction.title }}</a></li> -->
     {% endfor %}
     </div>
 {% else %}
-    <h4>No auctions are available.</h4>
+    <h4>Brak dostępnych aukcji.</h4>
 {% endif %}
 
 {% endblock %}

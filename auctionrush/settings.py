@@ -22,14 +22,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = '00000000000000000000000000000000000000000000000000'
 
-with open('/root/secret_key.txt') as f:
-    SECRET_KEY = f.read().strip()
+# with open('/root/secret_key.txt') as f:
+SECRET_KEY = 'ELO520'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    # '0.0.0.0',
+    '0.0.0.0',
+    '127.0.0.1',
     'auction-rush.xyz',
     'auctionrush.tk',
     'www.auctionrush.tk',
@@ -120,9 +121,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl-pl'
 
-TIME_ZONE = 'Europe/Athens'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 

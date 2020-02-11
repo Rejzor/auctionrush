@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  {% block title %}<title>Auction Rush</title>{% endblock %}
+  {% block title %}<title>Ptaszinikowe aukcje</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
@@ -14,21 +14,21 @@
         <ul class="navbar">
           <li class="auction-rush-button">
               <a class="navbar-link" href="{% url 'index' %}">
-                  Auction Rush
+                  Ptasznikowe aukcje
               </a>
           </li>
-          <li class="navbar-item"><a class="navbar-link" href="{% url 'auctions:auctions' %}">All auctions</a></li>
+          <li class="navbar-item"><a class="navbar-link" href="{% url 'auctions:auctions' %}">Wszystkie aukcje</a></li>
           {% if user.is_authenticated %}
-          <li class="navbar-item"><a class="navbar-link" href="{% url 'my_auctions' %}">My auctions</a></li>
-          <li class="navbar-item"><a class="navbar-link" href="{% url 'my_bids' %}">My bids</a></li>
-          <li class="create-auction-button"><a class="navbar-link" href="{% url 'auctions:create' %}">Create an auction</a> </li>
+          <li class="navbar-item"><a class="navbar-link" href="{% url 'my_auctions' %}">Moje aukcje</a></li>
+          <li class="navbar-item"><a class="navbar-link" href="{% url 'my_bids' %}">Moje licytacje</a></li>
+          <li class="create-auction-button"><a class="navbar-link" href="{% url 'auctions:create' %}">Stwórz aukcje</a> </li>
           {% endif %}
           {% if user.is_authenticated %}
-            <li class="navbar-item-right"><a class="navbar-link" href="{% url 'logout' %}?next={{request.path}}">Logout</a></li>
-            <li class="navbar-item-right"><span class="navbar-text">Logged in as: <span class="username">{{ user.get_username }}</span></span></li>
+            <li class="navbar-item-right"><a class="navbar-link" href="{% url 'logout' %}?next={{request.path}}">Wyloguj</a></li>
+            <li class="navbar-item-right"><span class="navbar-text">Zalogowano jako: <span class="username">{{ user.get_username }}</span></span></li>
           {% else %}
-            <li class="navbar-item-right"><a class="navbar-link" href="{% url 'login' %}?next={{request.path}}">Login</a></li>
-            <li class="navbar-item-right"><a class="navbar-link" href="{% url 'register' %}?next={{request.path}}">Register</a></li>
+            <li class="navbar-item-right"><a class="navbar-link" href="{% url 'login' %}?next={{request.path}}">Zaloguj</a></li>
+            <li class="navbar-item-right"><a class="navbar-link" href="{% url 'register' %}?next={{request.path}}">Rejestracja</a></li>
           {% endif %}
         </ul>
      {% endblock %}

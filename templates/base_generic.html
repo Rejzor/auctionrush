@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  {% block title %}<title>Flying Dutchman</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -17,9 +16,9 @@
       <div class="col-sm-2">
       {% block sidebar %}
         <ul class="sidebar-nav">
-          <li><a href="{% url 'auctions:index' %}">Home</a></li>
-          <li><a href="{% url 'my_auctions' %}">My auctions</a></li>
-          <li><a href="{% url 'my_bids' %}">My bids</a></li>
+          <li><a href="{% url 'auctions:index' %}">Strona główna</a></li>
+          <li><a href="{% url 'my_auctions' %}">Moje aukcje</a></li>
+          <li><a href="{% url 'my_bids' %}">Moje licytacje</a></li>
           {% if user.is_authenticated %}
             <li>User: {{ user.get_username }}</li>
             <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>

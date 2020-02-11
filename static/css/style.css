@@ -226,7 +226,7 @@ h4 {
     /* margin-right: 11%; */
     /* width: 20%; */
     /* height: 423px; */
-    width: 700px;
+    width: 850px;
     /* width: 75%; */
     /* height:200px; */
     text-decoration: none;
@@ -389,8 +389,8 @@ li a {
     margin-right: -20px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    width:300px;
-    height:300px;
+    width:390px;
+    height:390px;
 
     object-fit: cover;
     margin-bottom: 10px;
@@ -406,7 +406,7 @@ li a {
     margin: 6px;
     /* width: 20%; */
     /* height: 30%; */
-    width: 260px;
+    width: 350px;
     /* height:200px; */
     text-decoration: none;
     color: var(--color7);
