@@ -8,6 +8,7 @@ from django.urls import reverse
 from .models import Auction, Bid
 from .forms import ImageUploadForm
 
+
 # Main page
 def index(request):
     # First get all auctions and resolve them
@@ -36,6 +37,7 @@ def auctions(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 # Details on some auction
 def detail(request, auction_id):
     auction = get_object_or_404(Auction, pk=auction_id)
@@ -50,10 +52,10 @@ def detail(request, auction_id):
         if user_bid:
             already_bid = True
             bid_amount = user_bid.amount
-            print(bid_amount)
-            return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid, 'bid_amount': bid_amount})
+            return render(request, 'auctions/detail.html',
+                          {'auction': auction, 'already_bid': already_bid, 'bid_amount': bid_amount})
 
-    return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid}, )
+    return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid})
 
 
 # Bid on some auction
@@ -62,7 +64,6 @@ def bid(request, auction_id):
     auction = get_object_or_404(Auction, pk=auction_id)
     auction.resolve()
     bid = Bid.objects.filter(bidder=request.user).filter(auction=auction).first()
-    min_value_overbid = False
     if not auction.is_active:
         return render(request, 'auctions/detail.html', {
             'auction': auction,
@@ -71,21 +72,24 @@ def bid(request, auction_id):
 
     try:
         bid_amount = request.POST['amount']
+        try:
+            int(bid_amount)
+        except:
+            raise (KeyError)
+
         if not bid_amount or int(bid_amount) < auction.min_value:
-            raise(KeyError)
+            raise (KeyError)
 
         if int(bid_amount) == auction.final_value:
-            raise(KeyError)
+            raise (KeyError)
 
         if not bid:
             # Create new Bid object if it does not exist
             bid = Bid()
             bid.auction = auction
             bid.bidder = request.user
-
         bid.amount = bid.check_amount(bid_amount, auction.bid_value, auction.min_value)
         bid.date = datetime.now(timezone.utc)
-        # auction.min_value = bid.amount
         auction.winner = bid.bidder
         auction.final_value = bid_amount
         auction.save()
@@ -102,6 +106,7 @@ def bid(request, auction_id):
         bid.save()
         return HttpResponseRedirect(reverse('my_bids', args=()))
 
+
 # Create auction
 @login_required
 def create(request):
@@ -112,11 +117,16 @@ def create(request):
             min_value = request.POST['min_value']
             bid_value = request.POST['bid_value']
             if not title or not min_value or not bid_value:
-                raise(KeyError)
+                raise (KeyError)
+            try:
+                int(bid_value)
+                int(min_value)
+            except:
+                raise (KeyError)
         except (KeyError):
             # Redisplay the create auction page with an error message.
             return render(request, 'auctions/create.html', {
-                'error_message': "Please fill the required fields.",
+                'error_message': "Uzupełnij poprawnie niezbędne pola.",
             })
         else:
             auction = Auction()
@@ -147,6 +157,7 @@ def my_auctions(request):
         'my_auctions_list': my_auctions_list,
     }
     return HttpResponse(template.render(context, request))
+
 
 @login_required
 def my_bids(request):

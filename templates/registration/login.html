@@ -4,15 +4,13 @@
 
 <div class="login-wrapper">
     {% if form.errors %}
-      <p class="error">Your username and password didn't match. Please try again.</p>
+      <p class="error">Nieprawidłowe dane logowania. Spróbuj ponownie.</p>
     {% endif %}
-
     {% if next %}
       {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
+        <p>Twoje konto nie ma dostępu do tej strony. By kontynuować, zaloguj się</p>
       {% else %}
-        <p>Please login to see this page.</p>
+        <p>Zaloguj się by mieć dostęp do tej strony</p>
       {% endif %}
     {% endif %}
 
@@ -26,12 +24,10 @@
         <span class="textbox">{{ form.password }}</span>
         <br>
         <br>
-
         <input class="submit_button" type="submit" value="Login" />
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
 
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    <p><a href="{% url 'password_reset' %}">Zapomniałeś hasła?</a></p>
 </div>
 {% endblock %}

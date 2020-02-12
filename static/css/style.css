@@ -109,7 +109,7 @@ h4 {
     padding: 10px;
     background: var(--color9);
     border: 0px;
-    width: 90%;
+    width: 100%;
     color: var(--background);
 }
 
@@ -175,8 +175,8 @@ h4 {
 /* Index and detail pages */
 .auction_image {
     width:50%;
-    max-width:400px;
-    max-height:400px;
+    max-width:550px;
+    max-height:550px;
     border-radius: 12px;
     margin: 40px;
     float: left;
@@ -226,7 +226,7 @@ h4 {
     /* margin-right: 11%; */
     /* width: 20%; */
     /* height: 423px; */
-    width: 850px;
+    width: 510px;
     /* width: 75%; */
     /* height:200px; */
     text-decoration: none;
@@ -389,8 +389,8 @@ li a {
     margin-right: -20px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    width:390px;
-    height:390px;
+    width:550px;
+    height:550px;
 
     object-fit: cover;
     margin-bottom: 10px;
@@ -406,7 +406,7 @@ li a {
     margin: 6px;
     /* width: 20%; */
     /* height: 30%; */
-    width: 350px;
+    width: 510px;
     /* height:200px; */
     text-decoration: none;
     color: var(--color7);
@@ -711,7 +711,7 @@ li a {
     }
 
     .desc_box {
-        width: 80%;
+        width: 75%;
     }
 
     h1 {
