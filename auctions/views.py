@@ -23,6 +23,7 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def auctions(request):
     # Get all auctions, newest first
     auction_list = Auction.objects.order_by('-date_added')
@@ -53,15 +54,7 @@ def detail(request, auction_id):
             return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid, 'bid_amount': bid_amount})
 
     return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid}, )
-    # try:
-    #     auction = Auction.objects.get(pk=auction_id)
-    # except Auction.DoesNotExist:
-    #     raise Http404("Auction does not exist")
-    # return render(request, 'auctions/detail.html', {'auction': auction})
 
-# def results(request, auction_id):
-#     response = "You're looking at the results of auction %s."
-#     return HttpResponse(response % auction_id)
 
 # Bid on some auction
 @login_required
@@ -69,7 +62,7 @@ def bid(request, auction_id):
     auction = get_object_or_404(Auction, pk=auction_id)
     auction.resolve()
     bid = Bid.objects.filter(bidder=request.user).filter(auction=auction).first()
-
+    min_value_overbid = False
     if not auction.is_active:
         return render(request, 'auctions/detail.html', {
             'auction': auction,
@@ -78,17 +71,21 @@ def bid(request, auction_id):
 
     try:
         bid_amount = request.POST['amount']
-        # Prevent user from entering an empty or invalid bid
         if not bid_amount or int(bid_amount) < auction.min_value:
             raise(KeyError)
-        if not bid or bid.bidder is not request.user:
+
+        if int(bid_amount) == auction.final_value:
+            raise(KeyError)
+
+        if not bid:
             # Create new Bid object if it does not exist
             bid = Bid()
             bid.auction = auction
             bid.bidder = request.user
+
         bid.amount = bid.check_amount(bid_amount, auction.bid_value, auction.min_value)
         bid.date = datetime.now(timezone.utc)
-        auction.min_value = bid.amount
+        # auction.min_value = bid.amount
         auction.winner = bid.bidder
         auction.final_value = bid_amount
         auction.save()
@@ -100,22 +97,10 @@ def bid(request, auction_id):
             'auction': auction,
             'error_message': "Wartość,którą podałeś/aś jest nieprawidłowa",
         })
+
     else:
         bid.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        # return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
         return HttpResponseRedirect(reverse('my_bids', args=()))
-
-    # #     # TODO redirect to my bids
-    #     template = loader.get_template('auctions/my_bids.html')
-    #     context = {
-    #         'my_bids_list': my_bids_list,
-    #     }
-    #     return HttpResponse(template.render(context, request))
-    # #
-    # return HttpResponse(f"You just bid {bid_amount} on auction {auction_id}.")
 
 # Create auction
 @login_required
@@ -134,7 +119,6 @@ def create(request):
                 'error_message': "Please fill the required fields.",
             })
         else:
-            # Create new Bid object
             auction = Auction()
             auction.author = request.user
             auction.title = title
@@ -144,11 +128,9 @@ def create(request):
             if form.is_valid():
                 image = form.cleaned_data['image']
                 auction.image = image
-            # auction.date_added = datetime.utcnow()
             auction.bid_value = bid_value
             auction.date_added = datetime.now(timezone.utc)
             auction.save()
-            # return HttpResponseRedirect(reverse('auctions:detail', args=(auction.id,)))
             return HttpResponseRedirect(reverse('my_auctions', args=()))
     else:
         return render(request, 'auctions/create.html')

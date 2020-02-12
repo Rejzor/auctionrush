@@ -13,6 +13,8 @@
         {% csrf_token %}
         <div class=\"input_label\">
         {% if error_message %}<p class="error" ><strong>{{ error_message }}</strong></p>{% endif %}
+        <span>Kwota startowa: {{ auction.min_value }}zł</span>
+        <br>
         <span>Przebijamy o {{ auction.bid_value }}zł</span>
         <br>
         <span>Wprowadź wartość:</span>
@@ -39,7 +41,11 @@
             {% else %}
             <div class="auction-card-inactive">Zakończona</div>
             {% endif %}
-            <div class="auction-card-value">{{ auction.min_value }}zł</div>
+            {% if not auction.final_value %}
+                <div class="auction-card-value">Nikt nie licytuje</div>
+            {% else %}
+                <div class="auction-card-value">{{ auction.winner }} {{ auction.final_value }}zł</div>
+            {% endif %}
         </div>
     </span>
 </div>

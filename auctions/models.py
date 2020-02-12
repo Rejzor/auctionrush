@@ -4,7 +4,7 @@ from datetime import timedelta, datetime, timezone
 from math import ceil
 
 # Auction duration in minutes
-AUCTION_DURATION = 5
+AUCTION_DURATION = 20
 
 class Auction(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
