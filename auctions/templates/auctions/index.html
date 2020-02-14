@@ -18,7 +18,13 @@
                         <div class="auction-card-value">Nikt nie licytuje</div>
                     {% endif %}
                 {% else %}
-                    <div class="auction-card-active">Pozosotało mniej niż {{ auction.remaining_minutes }}m</div>
+                    {% if auction.final_value  %}
+                        <div class="auction-card-date">Koniec: {{ auction.deadline_date }}</div>
+                        <div class="auction-card-value">{{ auction.winner }} {{ auction.final_value }}zł</div>
+                    {% else %}
+                        <div class="auction-card-date">Koniec: {{ auction.deadline_date }}</div>
+                        <div class="auction-card-value">Nikt nie licytuje</div>
+                    {% endif %}
                 {% endif %}
             {% else %}
             <div class="auction-card-inactive">Zakończona</div>

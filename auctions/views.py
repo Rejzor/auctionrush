@@ -4,9 +4,10 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timezone
 from django.urls import reverse
+import pytz
 
 from .models import Auction, Bid
-from .forms import ImageUploadForm
+from .forms import ImageUploadForm, DeadlineDateForm
 
 
 # Main page
@@ -138,6 +139,16 @@ def create(request):
             if form.is_valid():
                 image = form.cleaned_data['image']
                 auction.image = image
+            auction.deadline_date = request.POST['deadline_date']
+            try:
+                datetime.strptime(auction.deadline_date, '%d/%m/%Y %H:%M')
+                now = datetime.now(timezone.utc)
+                if now > datetime.strptime(auction.deadline_date, '%d/%m/%Y %H:%M').replace(tzinfo=pytz.UTC):
+                    raise Exception
+            except:
+                return render(request, 'auctions/create.html', {
+                    'error_message': "Źle podany format daty. Spórbuj ponownie podająć dzień/miesiąc/rok godzina:minuty",
+                })
             auction.bid_value = bid_value
             auction.date_added = datetime.now(timezone.utc)
             auction.save()

@@ -17,6 +17,7 @@
       --color13:     #9422F6;
       --color14:     #10C2E5;
       --color15:     #656565;
+      --color16:     #1d5596;
 
       --main-bg:     #FAFAFA;
       --navbar-bg:   #2A2A2A;
@@ -449,6 +450,15 @@ li a {
     font-weight: bold;
     color: var(--background);
     background: var(--color3);
+    padding: 10px;
+    border-radius: 6px;
+    float: left;
+}
+
+.auction-card-date {
+    font-weight: bold;
+    color: var(--background);
+    background: var(--color16);
     padding: 10px;
     border-radius: 6px;
     float: left;

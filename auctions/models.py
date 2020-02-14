@@ -2,15 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta, datetime, timezone
 from math import ceil
+import pytz
 
-# Auction duration in minutes
-AUCTION_DURATION = 20
 
 class Auction(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=300)
     desc = models.CharField(max_length=2000, blank=True)
-    image = models.ImageField(upload_to='auction_images/', blank=True, default = 'auction_images/default/default.svg')
+    image = models.ImageField(upload_to='auction_images/', blank=True, default='auction_images/rick.jpeg')
     min_value = models.IntegerField()
     date_added = models.DateTimeField()
     is_active = models.BooleanField(default=True)
@@ -21,6 +20,11 @@ class Auction(models.Model):
                                related_query_name="auction_winner")
     final_value = models.IntegerField(blank=True, null=True)
     bid_value = models.IntegerField(blank=True, null=True)
+    deadline_date = models.CharField(max_length=300)
+
+    def convert_date_to_minutes(self):
+        converted = datetime.strptime(self.deadline_date, '%d/%m/%Y %H:%M').replace(tzinfo=pytz.UTC)
+        return converted
 
     def resolve(self):
         if self.is_active:
@@ -32,7 +36,7 @@ class Auction(models.Model):
     # Helper function that determines if the auction has expired
     def has_expired(self):
         now = datetime.now(timezone.utc)
-        expiration = self.date_added + timedelta(minutes=AUCTION_DURATION)
+        expiration = self.convert_date_to_minutes()
         if now > expiration:
             return True
         else:
@@ -43,7 +47,8 @@ class Auction(models.Model):
     def remaining_minutes(self):
         if self.is_active:
             now = datetime.now(timezone.utc)
-            expiration = self.date_added + timedelta(minutes=AUCTION_DURATION)
+            # expiration = self.date_added + timedelta(minutes=self.convert_date_to_minutes())
+            expiration = self.convert_date_to_minutes()
             minutes_remaining = ceil((expiration - now).total_seconds() / 60)
             return(minutes_remaining)
         else:
@@ -54,7 +59,6 @@ class Bid(models.Model):
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    # is_cancelled = models.BooleanField(default=False)
     date = models.DateTimeField('when the bid was made')
 
     def check_amount(self, bid_amount, bid_value, min_value):

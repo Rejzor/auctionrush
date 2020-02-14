@@ -34,7 +34,7 @@
                 {% if auction.remaining_minutes < 2 %}
                     <div class="auction-card-urgent">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
                 {% else %}
-                    <div class="auction-card-active">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
+                    <div class="auction-card-date">Koniec: {{ auction.deadline_date }}</div>
                 {% endif %}
             {% else %}
             <div class="auction-card-inactive">Zakończona</div>
