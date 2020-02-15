@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 app_name = 'auctions'
@@ -14,4 +14,5 @@ urlpatterns = [
     # path('<int:auction_id>/results/', views.results, name='results'),
     # Example: /auctions/5/bid/
     path('<int:auction_id>/bid/', views.bid, name='bid'),
+    path('messages/', include('django_messages.urls'), name="messages"),
 ]

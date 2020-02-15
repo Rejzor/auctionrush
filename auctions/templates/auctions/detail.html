@@ -50,6 +50,9 @@
 {% if auction.desc %}
 <div class="wrapper">
     <div class="desc_box">
+        <div class="desc_box_title">Autor aukcji</div><b><p align="center">{{ auction.author }}</p></b></div>
+    <br>
+    <div class="desc_box">
     <div class="desc_box_title">Opis</div>
     <hr>
     {{ auction.desc }}
@@ -71,6 +74,9 @@
     </div>
 {% else %}
 <div class="wrapper">
+    <div class="desc_box">
+        <div class="desc_box_title">Autor aukcji</div><b><p align="center">{{ auction.author }}</p></b></div>
+    <br>
     <div class="desc_box">
     <div class="desc_box_title">Historia</div>
         <hr><table cellpadding="15", cellspacing="5">
