@@ -23,7 +23,7 @@ class Auction(models.Model):
     deadline_date = models.CharField(max_length=300)
 
     def convert_date_to_minutes(self):
-        converted = datetime.strptime(self.deadline_date, '%d/%m/%Y %H:%M').replace(tzinfo=pytz.UTC)
+        converted = datetime.strptime(self.deadline_date, '%d/%m/%Y %H:%M').replace(tzinfo=pytz.timezone('Europe/Warsaw'))
         return converted
 
     def resolve(self):
@@ -35,8 +35,10 @@ class Auction(models.Model):
 
     # Helper function that determines if the auction has expired
     def has_expired(self):
-        now = datetime.now(timezone.utc)
+        now = datetime.now().replace(tzinfo=pytz.timezone('Europe/Warsaw'))
+        print(now)
         expiration = self.convert_date_to_minutes()
+        print(expiration)
         if now > expiration:
             return True
         else:
@@ -46,7 +48,7 @@ class Auction(models.Model):
     @property
     def remaining_minutes(self):
         if self.is_active:
-            now = datetime.now(timezone.utc)
+            now = datetime.now().replace(tzinfo=pytz.timezone('Europe/Warsaw'))
             # expiration = self.date_added + timedelta(minutes=self.convert_date_to_minutes())
             expiration = self.convert_date_to_minutes()
             minutes_remaining = ceil((expiration - now).total_seconds() / 60)
@@ -68,4 +70,3 @@ class Bid(models.Model):
             return int(bid_amount)
         else:
             raise(KeyError)
-

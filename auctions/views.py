@@ -44,19 +44,20 @@ def detail(request, auction_id):
     auction = get_object_or_404(Auction, pk=auction_id)
     auction.resolve()
     already_bid = False
+    bid_list = Bid.objects.all().filter(auction=auction)
     if request.user.is_authenticated:
         if auction.author == request.user:
             own_auction = True
-            return render(request, 'auctions/detail.html', {'auction': auction, 'own_auction': own_auction})
+            return render(request, 'auctions/detail.html', {'auction': auction, 'own_auction': own_auction, 'bid_list': bid_list})
 
         user_bid = Bid.objects.filter(bidder=request.user).filter(auction=auction).first()
         if user_bid:
             already_bid = True
             bid_amount = user_bid.amount
             return render(request, 'auctions/detail.html',
-                          {'auction': auction, 'already_bid': already_bid, 'bid_amount': bid_amount})
+                          {'auction': auction, 'already_bid': already_bid, 'bid_amount': bid_amount, 'bid_list': bid_list})
 
-    return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid})
+    return render(request, 'auctions/detail.html', {'auction': auction, 'already_bid': already_bid, 'bid_list': bid_list})
 
 
 # Bid on some auction
@@ -84,11 +85,9 @@ def bid(request, auction_id):
         if int(bid_amount) == auction.final_value:
             raise (KeyError)
 
-        if not bid:
-            # Create new Bid object if it does not exist
-            bid = Bid()
-            bid.auction = auction
-            bid.bidder = request.user
+        bid = Bid()
+        bid.auction = auction
+        bid.bidder = request.user
         bid.amount = bid.check_amount(bid_amount, auction.bid_value, auction.min_value)
         bid.date = datetime.now(timezone.utc)
         auction.winner = bid.bidder
@@ -142,8 +141,8 @@ def create(request):
             auction.deadline_date = request.POST['deadline_date']
             try:
                 datetime.strptime(auction.deadline_date, '%d/%m/%Y %H:%M')
-                now = datetime.now(timezone.utc)
-                if now > datetime.strptime(auction.deadline_date, '%d/%m/%Y %H:%M').replace(tzinfo=pytz.UTC):
+                now = datetime.now().replace(tzinfo=pytz.timezone('Europe/Warsaw'))
+                if now > datetime.strptime(auction.deadline_date, '%d/%m/%Y %H:%M').replace(tzinfo=pytz.timezone('Europe/Warsaw')):
                     raise Exception
             except:
                 return render(request, 'auctions/create.html', {
@@ -182,3 +181,5 @@ def my_bids(request):
         'my_bids_list': my_bids_list,
     }
     return HttpResponse(template.render(context, request))
+
+

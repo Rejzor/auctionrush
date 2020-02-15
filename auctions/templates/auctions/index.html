@@ -9,7 +9,7 @@
             <div><img class="auction_image_index" src="{{ auction.image.url }}"></div>
             <div class="auction-card-title">{{ auction.title }}</div>
             {% if auction.is_active %}
-                {% if auction.remaining_minutes < 2 %}
+                {% if auction.remaining_minutes < 6 %}
                     {% if auction.final_value  %}
                         <div class="auction-card-urgent">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
                         <div class="auction-card-value">{{ auction.winner }} {{ auction.final_value }}zł</div>

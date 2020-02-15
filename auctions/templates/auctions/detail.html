@@ -31,7 +31,7 @@
     <span class="auction-card">
         <span><img class="auction_image_index" src="{{ auction.image.url }}"></span>
             {% if auction.is_active %}
-                {% if auction.remaining_minutes < 2 %}
+                {% if auction.remaining_minutes < 6 %}
                     <div class="auction-card-urgent">Pozostało mniej niż {{ auction.remaining_minutes }}m</div>
                 {% else %}
                     <div class="auction-card-date">Koniec: {{ auction.deadline_date }}</div>
@@ -53,8 +53,40 @@
     <div class="desc_box_title">Opis</div>
     <hr>
     {{ auction.desc }}
+    <br>
+    </br>
+    <div class="desc_box_title">Historia</div>
+    <hr><table cellpadding="15", cellspacing="5">
+        <tr>
+			<th align="center", >Użytkownik</th>
+			<th align="center">Kwota</th>
+			<th align="center">Data</th>
+    </tr>
+    {% for bid in bid_list reversed %}
+        <tr>
+       <p><td align="center">{{ bid.bidder }}</td> <td align="center">{{  bid.amount }}</td> <td align="right">{{ bid.date }}</td></p>
+    {% endfor %}
+        </tr>
+    </table>
     </div>
-    </div>
+{% else %}
+<div class="wrapper">
+    <div class="desc_box">
+    <div class="desc_box_title">Historia</div>
+        <hr><table cellpadding="15", cellspacing="5">
+            <tr>
+                <th align="center", >Użytkownik</th>
+                <th align="center">Kwota</th>
+                <th align="center">Data</th>
+            </tr>
+        {% for bid in bid_list reversed %}
+            <tr>
+                <p><td align="center">{{ bid.bidder }}</td> <td align="center">{{  bid.amount }}</td> <td align="right">{{ bid.date }}</td></p>
+        {% endfor %}
+            </tr>
+</table>
+</div>
+    <br>
 </div>
 {% endif %}
 
