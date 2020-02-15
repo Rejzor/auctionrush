@@ -10,6 +10,8 @@
             <hr>
             <div class="my-bid-label">
                 Moja ostatnia stawka: {{ bid.amount }}zł
+                <br>
+                Aktualnie najwyższa stawka: {{ bid.auction.final_value }}zł
                 <div class="my-bid-date">({{ bid.date }})</div>
             </div>
             {% if bid.auction.is_active %}

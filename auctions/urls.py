@@ -14,5 +14,4 @@ urlpatterns = [
     # path('<int:auction_id>/results/', views.results, name='results'),
     # Example: /auctions/5/bid/
     path('<int:auction_id>/bid/', views.bid, name='bid'),
-    path('messages/', include('django_messages.urls')),
 ]

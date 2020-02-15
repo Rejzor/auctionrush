@@ -13,9 +13,15 @@
                 <span class="my-auction-status-active">
                     Aukcja w toku
                 </span>
+                {% if auction.winner %}
                 <span class="my-auction-value">
-                    {{ auction.min_value }}zł
+                    Prowadzi: {{ auction.winner }} Kwota: {{ auction.final_value }}zł
                 </span>
+                    {% else %}
+                                    <span class="my-auction-value">
+                    Nikt nie licytuje
+                </span>
+                    {% endif %}
             {% else %}
                 {% if auction.final_value %}
                 <span class="my-auction-status-resolved">
