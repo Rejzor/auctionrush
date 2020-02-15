@@ -24,7 +24,7 @@
           <li class="create-auction-button"><a class="navbar-link" href="{% url 'auctions:create' %}">Stwórz aukcje</a> </li>
           {% endif %}
           {% if user.is_authenticated %}
-              <li class="navbar-item-right"><a class="navbar-link" href="{% url 'index' %}/messages/inbox/">Wiadomości</a></li>
+              <li class="navbar-item-right"><a class="navbar-link" href="{% url 'messages_inbox' %}">Wiadomości</a></li>
             <li class="navbar-item-right"><a class="navbar-link" href="{% url 'logout' %}?next={{request.path}}">Wyloguj</a></li>
             <li class="navbar-item-right"><span class="navbar-text">Zalogowano jako: <span class="username">{{ user.get_username }}</span></span></li>
           {% else %}
