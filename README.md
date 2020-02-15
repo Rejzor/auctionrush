@@ -20,8 +20,11 @@ Prosta aplikacja do licytacji pająków od społczeności dla społeczności
 + Testy
 
 ## Previews
-![Screenshot](./screenshots/computer1.png?raw=true "all auctions")
-![Screenshot](./screenshots/computer2.png?raw=true "my auctions")
-![Screenshot](./screenshots/computer3.png?raw=true "my bids")
-![Screenshot](./screenshots/computer4.png?raw=true "bid on auction")
-![Screenshot](./screenshots/computer5.png?raw=true "create auction")
+![Screenshot](./screenshots/wszystkie_aukcje.png?raw=true "wszystkie aukcje")
+![Screenshot](./screenshots/cwszystkie_aukcje_3.png?raw=true "wszystkie aukcje 3")
+![Screenshot](./screenshots/wygląd_aukcji.png?raw=true "wygląd aukcji")
+![Screenshot](./screenshots/tworzenie_aukcji.png?raw=true "tworzenie aukcji")
+![Screenshot](./screenshots/Moje_wystawione_aukcje.png?raw=true "Moje wystawione aukcje")
+![Screenshot](./screenshots/Moje_licytacje.png?raw=true "Moje licytacje")
+![Screenshot](./screenshots/Moje_aukcje_wygrany.png?raw=true "Moje aukcje")
+![Screenshot](./screenshots/Moje_aukcje_2.png?raw=true "Moje aukcje 2")
