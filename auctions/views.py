@@ -65,10 +65,11 @@ def detail(request, auction_id):
 def bid(request, auction_id):
     auction = get_object_or_404(Auction, pk=auction_id)
     auction.resolve()
-    bid = Bid.objects.filter(bidder=request.user).filter(auction=auction).first()
+    bid_list = Bid.objects.all().filter(auction=auction)
     if not auction.is_active:
         return render(request, 'auctions/detail.html', {
             'auction': auction,
+            'bid_list': bid_list,
             'error_message': "Aukcja została zakończona",
         })
 
@@ -99,6 +100,7 @@ def bid(request, auction_id):
         # Redisplay the auction details.
         return render(request, 'auctions/detail.html', {
             'auction': auction,
+            'bid_list': bid_list,
             'error_message': "Wartość,którą podałeś/aś jest nieprawidłowa",
         })
 
