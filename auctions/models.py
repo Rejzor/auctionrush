@@ -28,7 +28,6 @@ class Auction(models.Model):
 
     def resolve(self):
         if self.is_active:
-            # If expired
             if self.has_expired():
                 self.is_active = False
                 self.save()
@@ -36,9 +35,7 @@ class Auction(models.Model):
     # Helper function that determines if the auction has expired
     def has_expired(self):
         now = datetime.now().replace(tzinfo=pytz.timezone('Europe/Warsaw'))
-        print(now)
         expiration = self.convert_date_to_minutes()
-        print(expiration)
         if now > expiration:
             return True
         else:
@@ -49,7 +46,6 @@ class Auction(models.Model):
     def remaining_minutes(self):
         if self.is_active:
             now = datetime.now().replace(tzinfo=pytz.timezone('Europe/Warsaw'))
-            # expiration = self.date_added + timedelta(minutes=self.convert_date_to_minutes())
             expiration = self.convert_date_to_minutes()
             minutes_remaining = ceil((expiration - now).total_seconds() / 60)
             return(minutes_remaining)
