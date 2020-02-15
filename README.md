@@ -1,21 +1,23 @@
-# Auction Rush
-Quick and easy auctions.
+# Ptasznikowe aukcje
+Proste aplikacja do licytacji pająków od społczeności dla społeczności
 
-## Concept
-+ First-price sealed-bid auctions
-+ 5 minute duration
+## Aktualnie zaimnplementowano
++ Rejestracja konta
++ Logowanie / Wylogowanie
++ Tworzenie aukcji z podaniem wartości minimalnej, wartości przebicia, daty zakończenia
++ Licytacja
++ Prywatne wiadomości ( via django-messages)
++ Widok wszystkich aukcji ( zakończonych również )
++ Widok aktywnych aukcji
++ Widok konkretnej aukcji wraz z historią licytacji
++ Widok "Moich aukcji"
++ Widok "Moich licytacji"
 
-## Features that work so far
-+ Register an account
-+ Login / Logout
-+ Create auctions
-+ Bid on auctions
-+ Update bid
-+ View all auctions (newest first)
-+ View active auctions (oldest first)
-+ View "My auctions"
-+ View "My bids"
-+ Auction resolution
+## TODO
++ Widok dla prywatnych wiadomości
++ Walidacja poprzez formy
++ Możliwość stopowania/usuwania aukcji
++ Testy
 
 ## Previews
 ![Screenshot](./screenshots/computer1.png?raw=true "all auctions")
