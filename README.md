@@ -1,5 +1,5 @@
 # Ptasznikowe aukcje
-Proste aplikacja do licytacji pająków od społczeności dla społeczności
+Prosta aplikacja do licytacji pająków od społczeności dla społeczności
 
 ## Aktualnie zaimnplementowano
 + Rejestracja konta
