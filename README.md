@@ -15,6 +15,7 @@ Prosta aplikacja do licytacji pająków od społczeności dla społeczności
 
 ## TODO
 + Widok dla prywatnych wiadomości
++ Widok dla rejestracji/logowania
 + Walidacja poprzez formy
 + Możliwość stopowania/usuwania aukcji
 + Testy
