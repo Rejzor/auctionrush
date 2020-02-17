@@ -83,8 +83,9 @@ def bid(request, auction_id):
         if not bid_amount or int(bid_amount) < auction.min_value:
             raise (KeyError)
 
-        if int(bid_amount) == auction.final_value:
-            raise (KeyError)
+        if auction.final_value:
+            if not bid_amount or int(bid_amount) <= auction.final_value:
+                raise (KeyError)
 
         bid = Bid()
         bid.auction = auction
